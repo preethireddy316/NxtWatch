@@ -18,29 +18,21 @@ class App extends Component{
     }
 
 
-    return(
-        <Context.Provider value={{
+    render(){
+        return(
+    <Context.Provider value={{
             isDarkTheme,
             onChangeTheme:this.onChangeTheme,
         }}>
-
-        return(
-            <Switch>
+     <Switch>
     <Route exact path="/login" component={LoginForm} />
-        <ProtectedRoute exact path="/" component={HomeRoute} />
-
+    <ProtectedRoute exact path="/" component={HomeRoute} />
     <ProtectedRoute exact path="/trending/" component={TrendingRoute} />
-
     <ProtectedRoute exact path="/gaming/" component={GamingRoute} />
-
-    <ProtectedRoute exact path="/saved-videos/" component={SavedVideos} />
-    <ProtectedRoute exact path="/videos/:videoId" component={VideoDetails} />
-
-
-</Switch>)
-
-        
-        </Context.Provider>
-    )
+    <ProtectedRoute exact path="/saved-videos/" component={SavedVideosRoute} />
+    <ProtectedRoute exact path="/videos/:videoId" component={VideoDetailsRoute} />
+    </Switch>
+    </Context.Provider>
+        )}
 }
 export default App

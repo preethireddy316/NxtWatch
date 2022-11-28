@@ -4,24 +4,15 @@ import {formatDistanceToNow} from 'date-fns'
 
 const parse = require('date-fns/parse')
 
-const HomeItem = props => {
+const TrendingItem = props => {
   const {details} = props
-  const {
-    id,
-    title,
-    thumbnailUrl,
-    name,
-    profileImageUrl,
-    viewCount,
-    publishedAt,
-  } = details
+  const {id, title, thumbnailUrl, name, viewCount, publishedAt} = details
   const date = parse(publishedAt, 'MM/dd/yyyy')
   const diff = formatDistanceToNow(date)
   return (
     <li>
-      <Link to={`home/${id}`}>
+      <Link to={`/videos/${id}`}>
         <img src={thumbnailUrl} alt="" />
-        <img src={profileImageUrl} alt="" />
         <p>{title}</p>
         <p>{name}</p>
         <p>{viewCount} views</p>
@@ -31,4 +22,4 @@ const HomeItem = props => {
   )
 }
 
-export default HomeItem
+export default TrendingItem

@@ -2,7 +2,7 @@ import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 import {BsSearch} from 'react-icons/bs'
-import HomeItem from '../HomeItem'
+import GamingItem from '../HomeItem'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
@@ -15,7 +15,6 @@ const apiStatusConstants = {
 class Home extends Component {
   state = {
     videosList: [],
-    searchInput: '',
     apiStatus: apiStatusConstants.initial,
   }
 
@@ -36,7 +35,7 @@ class Home extends Component {
   getVideos = async () => {
     this.setState({apiStatus: apiStatusConstants.inProgress})
 
-    const url = `https://apis.ccbp.in/videos/all?search=${searchInput}`
+    const url = `https://apis.ccbp.in/videos/gaming`
     const jwtToken = Cookies.get('jwt_token')
     const options = {
       method: 'GET',
@@ -60,10 +59,6 @@ class Home extends Component {
     </div>
   }
 
-  onChangeSearchInput = event => {
-    this.setState({searchInput: event.target.value}, this.getVideos)
-  }
-
   retry = () => {
     this.getVideos()
   }
@@ -78,46 +73,14 @@ class Home extends Component {
     </div>
   )
 
-  renderSearchInput = () => {
-    const {searchInput} = this.state
-    return (
-      <div className="search-input-container">
-        <input
-          data-testid="searchButton"
-          value={searchInput}
-          type="search"
-          className="search-input"
-          placeholder="Search"
-          onChange={this.onChangeSearchInput}
-        />
-        <BsSearch className="search-icon" />
-      </div>
-    )
-  }
-
   renderSuccessView = () => {
-    const {videosList, searchInput} = this.state
-    const filteredList = videosList.filter(each =>
-      each.title.toLowerCase().includes(searchInput.toLowerCase()),
-    )
-
-    const noResults = filteredList.length === 0
-
+    const {videosList} = this.state
     return (
-      <>
-        {noResults ? (
-          this.renderNoSearchResults()
-        ) : (
-          <>
-            {this.renderSearchInput()}
-            <ul>
-              {videosList.map(each => (
-                <HomeItem key={each.id} details={each} />
-              ))}
-            </ul>
-          </>
-        )}
-      </>
+      <ul>
+        {videosList.map(each => (
+          <HomeItem key={each.id} details={each} />
+        ))}
+      </ul>
     )
   }
 
@@ -139,7 +102,6 @@ class Home extends Component {
 
   renderAllProducts = () => {
     const {apiStatus} = this.state
-
     switch (apiStatus) {
       case apiStatusConstants.success:
         return this.renderSuccessView()

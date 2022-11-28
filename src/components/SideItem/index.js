@@ -1,26 +1,28 @@
-import { AiFillHome } from "react-icons/ai";
-import { HiFire } from "react-icons/hi";
-import { SiYoutubegaming } from "react-icons/si";
-import { BiListPlus } from "react-icons/bi";
+import {Link} from 'react-router-dom'
 
-const SideItem=(props)=>{
-const {details,activeObj,onChangeActive}=props
-const {id,icon,path,name}=details
+/* eslint-disable no-unused-vars */
+import {AiFillHome} from 'react-icons/ai'
+import {HiFire} from 'react-icons/hi'
+import {SiYoutubegaming} from 'react-icons/si'
+import {BiListPlus} from 'react-icons/bi'
 
-ChangeObj=()=>{
+const SideItem = props => {
+  const {details, activeObj, onChangeActive} = props
+  const {id, icon, path, name} = details
+
+  const ChangeObj = () => {
     onChangeActive(details)
-}
-return(
+  }
+  return (
     <li>
-    <Link to={`/${path}`}>
+      <Link to={`/${path}`}>
         <button type="button" onClick={ChangeObj}>
-            <{icon}/>
-            {name}
+          {icon}
+          {name}
         </button>
-
-    </Link>
+      </Link>
     </li>
-)
+  )
 }
 
 export default SideItem

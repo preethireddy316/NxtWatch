@@ -1,8 +1,9 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
-import {BsSearch} from 'react-icons/bs'
-import GamingItem from '../HomeItem'
+import SideBar from '../SideBar'
+import Header from '../Header'
+import GamingItem from '../GamingItem'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
@@ -78,7 +79,7 @@ class Home extends Component {
     return (
       <ul>
         {videosList.map(each => (
-          <HomeItem key={each.id} details={each} />
+          <GamingItem key={each.id} details={each} />
         ))}
       </ul>
     )
@@ -115,7 +116,14 @@ class Home extends Component {
   }
 
   render() {
-    return <>{this.renderAllProducts()}</>
+    return (
+      <>
+        <Header />
+        <SideBar />
+
+        {this.renderAllProducts()}
+      </>
+    )
   }
 }
 

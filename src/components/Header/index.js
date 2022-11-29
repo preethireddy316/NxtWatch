@@ -1,3 +1,4 @@
+import {Link} from 'react-router-dom'
 import Context from '../../context/Context'
 
 const Header = props => (
@@ -15,27 +16,29 @@ const Header = props => (
 
       return (
         <nav className="nav">
-          <img src="" alt="" />
           <ul className="header-list">
-            <li to="/">
+            <Link to="/">
               <button type="button" onChange={changeTheme}>
                 <img
                   src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
                   alt="logo"
                 />
               </button>
-            </li>
-
+            </Link>
             <li>
-              <img
-                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-profile-img.png"
-                alt="profile"
-              />
+              <Link to="/">
+                <img
+                  src="https://assets.ccbp.in/frontend/react-js/nxt-watch-profile-img.png"
+                  alt="profile"
+                />
+              </Link>
             </li>
-            <li to="/">
-              <button type="button" onClick={onLogout}>
-                Logout
-              </button>
+            <li>
+              <Link to="/">
+                <button type="button" onClick={onLogout}>
+                  Logout
+                </button>
+              </Link>
             </li>
           </ul>
         </nav>

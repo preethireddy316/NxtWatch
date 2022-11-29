@@ -2,6 +2,8 @@ import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 import {BsSearch} from 'react-icons/bs'
+import SideBar from '../SideBar'
+import Header from '../Header'
 import HomeItem from '../HomeItem'
 
 const apiStatusConstants = {
@@ -35,7 +37,7 @@ class Home extends Component {
 
   getVideos = async () => {
     this.setState({apiStatus: apiStatusConstants.inProgress})
-
+    const {searchInput} = this.state
     const url = `https://apis.ccbp.in/videos/all?search=${searchInput}`
     const jwtToken = Cookies.get('jwt_token')
     const options = {
@@ -153,7 +155,13 @@ class Home extends Component {
   }
 
   render() {
-    return <>{this.renderAllProducts()}</>
+    return (
+      <>
+        <Header />
+        <SideBar />
+        {this.renderAllProducts()}
+      </>
+    )
   }
 }
 

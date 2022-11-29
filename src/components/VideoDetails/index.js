@@ -1,10 +1,11 @@
+import ReactPlayer from 'react-player'
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
-import SideBar from '../SideBar'
 import Header from '../Header'
 
-import HomeItem from '../HomeItem'
+import SideBar from '../SideBar'
+
 import Context from '../../context/Context'
 
 const apiStatusConstants = {
@@ -12,32 +13,38 @@ const apiStatusConstants = {
   success: 'SUCCESS',
   failure: 'FAILURE',
   inProgress: 'IN_PROGRESS',
-  noResults: 'noResult',
 }
 
-class SavedVideos extends Component {
+class VideoDetails extends Component {
   state = {
-    videosList: [],
+    videoDetailObj: {},
     apiStatus: apiStatusConstants.initial,
+    isSaved: false,
   }
 
   componentDidMount() {
-    this.getVideos()
+    this.getVideo()
   }
 
   convert = obj => ({
     id: obj.id,
     title: obj.title,
+    videoUrl: obj.video_url,
     thumbnailUrl: obj.thumbnail_url,
     name: obj.channel.name,
+    profileImageUrl: obj.channel.profile_image_url,
+    subscriberCount: obj.channel.subscriber_count,
     viewCount: obj.view_count,
     publishedAt: obj.published_at,
+    description: obj.description,
   })
 
-  getVideos = async () => {
+  getVideo = async () => {
     this.setState({apiStatus: apiStatusConstants.inProgress})
-
-    const url = `https://apis.ccbp.in/videos/all`
+    const {match} = this.props
+    const {params} = match
+    const {id} = params
+    const url = `https://apis.ccbp.in/videos/${id}`
     const jwtToken = Cookies.get('jwt_token')
     const options = {
       method: 'GET',
@@ -47,9 +54,9 @@ class SavedVideos extends Component {
     const data = await response.json()
     if (response.ok) {
       // success view
-      const list = data.videos.map(each => this.convert(each))
+      const obj = this.convert(data.video_details)
       this.setState({
-        videosList: list,
+        videoDetailObj: obj,
         apiStatus: apiStatusConstants.success,
       })
     } else {
@@ -58,26 +65,48 @@ class SavedVideos extends Component {
     }
   }
 
-  renderLoading = () => (
-    <div className="loader-container" data-testid="loader">
+  renderLoading = () => {
+    ;<div className="loader-container" data-testid="loader">
       <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
     </div>
-  )
+  }
 
   renderSuccessView = () => (
     <Context.Consumer>
       {value => {
-        const {savedList} = value
-        const {videosList} = this.state
-        const filteredList = videosList.filter(each =>
-          savedList.includes(each.id),
-        )
+        const {onSaveVideo} = value
+        const {videoDetailObj, isSaved} = this.state
+        const {
+          videoUrl,
+          title,
+          viewCount,
+          name,
+          subscriberCount,
+          description,
+        } = videoDetailObj
+
+        const saveVideo = () =>
+          this.setState(
+            {isSaved: !isSaved},
+            onSaveVideo(isSaved, videoDetailObj.id),
+          )
+
         return (
-          <ul>
-            {filteredList.map(each => (
-              <HomeItem key={each.id} details={each} />
-            ))}
-          </ul>
+          <>
+            <ReactPlayer url={videoUrl} />
+            <h1>{title}</h1>
+            <p>{viewCount}</p>
+            <p />
+            <button type="button">Like</button>
+            <button type="button">Dislike</button>
+            <button type="button" onClick={saveVideo}>
+              Save
+            </button>
+            <br />
+            <p>{name}</p>
+            <p>{subscriberCount} Subscribers</p>
+            <p>{description}</p>
+          </>
         )
       }}
     </Context.Consumer>
@@ -119,11 +148,10 @@ class SavedVideos extends Component {
       <>
         <Header />
         <SideBar />
-
         {this.renderAllProducts()}
       </>
     )
   }
 }
 
-export default SavedVideos
+export default VideoDetails

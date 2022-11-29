@@ -1,7 +1,8 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
-import {BsSearch} from 'react-icons/bs'
+import Header from '../Header'
+import SideBar from '../SideBar'
 import HomeItem from '../HomeItem'
 
 const apiStatusConstants = {
@@ -14,8 +15,7 @@ const apiStatusConstants = {
 
 class Trending extends Component {
   state = {
-    videosList: [],
-    searchInput: '',
+    trendVideosList: [],
     apiStatus: apiStatusConstants.initial,
   }
 
@@ -28,7 +28,6 @@ class Trending extends Component {
     title: obj.title,
     thumbnailUrl: obj.thumbnail_url,
     name: obj.channel.name,
-    profileImageUrl: obj.channel.profile_image_url,
     viewCount: obj.view_count,
     publishedAt: obj.published_at,
   })
@@ -47,7 +46,10 @@ class Trending extends Component {
     if (response.ok) {
       // success view
       const list = data.videos.map(each => this.convert(each))
-      this.setState({videosList: list, apiStatus: apiStatusConstants.success})
+      this.setState({
+        trendVideosList: list,
+        apiStatus: apiStatusConstants.success,
+      })
     } else {
       // failure view
       this.setState({apiStatus: apiStatusConstants.failure})
@@ -60,64 +62,14 @@ class Trending extends Component {
     </div>
   }
 
-  onChangeSearchInput = event => {
-    this.setState({searchInput: event.target.value}, this.getVideos)
-  }
-
-  retry = () => {
-    this.getVideos()
-  }
-
-  renderNoSearchResults = () => (
-    <div>
-      <h1>No Search</h1>
-      <p>Try different</p>
-      <button type="button" onClick={this.retry}>
-        Retry
-      </button>
-    </div>
-  )
-
-  renderSearchInput = () => {
-    const {searchInput} = this.state
-    return (
-      <div className="search-input-container">
-        <input
-          data-testid="searchButton"
-          value={searchInput}
-          type="search"
-          className="search-input"
-          placeholder="Search"
-          onChange={this.onChangeSearchInput}
-        />
-        <BsSearch className="search-icon" />
-      </div>
-    )
-  }
-
   renderSuccessView = () => {
-    const {videosList, searchInput} = this.state
-    const filteredList = videosList.filter(each =>
-      each.title.toLowerCase().includes(searchInput.toLowerCase()),
-    )
-
-    const noResults = filteredList.length === 0
-
+    const {trendVideosList} = this.state
     return (
-      <>
-        {noResults ? (
-          this.renderNoSearchResults()
-        ) : (
-          <>
-            {this.renderSearchInput()}
-            <ul>
-              {videosList.map(each => (
-                <HomeItem key={each.id} details={each} />
-              ))}
-            </ul>
-          </>
-        )}
-      </>
+      <ul>
+        {trendVideosList.map(each => (
+          <HomeItem key={each.id} details={each} />
+        ))}
+      </ul>
     )
   }
 
@@ -153,7 +105,14 @@ class Trending extends Component {
   }
 
   render() {
-    return <>{this.renderAllProducts()}</>
+    return (
+      <>
+        <Header />
+        <SideBar />
+
+        {this.renderAllProducts()}
+      </>
+    )
   }
 }
 

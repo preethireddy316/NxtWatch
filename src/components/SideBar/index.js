@@ -16,7 +16,7 @@ class SideBar extends Component {
 
   renderContact = () => (
     <>
-      <h1>CONTACT US</h1>
+      <p>CONTACT US</p>
       <ul>
         <li>
           <img
@@ -37,7 +37,7 @@ class SideBar extends Component {
           />
         </li>
       </ul>
-      <p>Enjoy</p>
+      <p>Enjoy! Now to see your channels and recommendations!</p>
     </>
   )
 

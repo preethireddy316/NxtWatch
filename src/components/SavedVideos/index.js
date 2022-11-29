@@ -1,6 +1,7 @@
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
+import {HiFire} from 'react-icons/hi'
 import SideBar from '../SideBar'
 import Header from '../Header'
 
@@ -43,7 +44,7 @@ class SavedVideos extends Component {
       method: 'GET',
       headers: {Authorization: `Bearer ${jwtToken}`},
     }
-    const response = await fetch(options, url)
+    const response = await fetch(url, options)
     const data = await response.json()
     if (response.ok) {
       // success view
@@ -73,11 +74,29 @@ class SavedVideos extends Component {
           savedList.includes(each.id),
         )
         return (
-          <ul>
-            {filteredList.map(each => (
-              <HomeItem key={each.id} details={each} />
-            ))}
-          </ul>
+          <>
+            {filteredList.length === 0 ? (
+              <>
+                <img
+                  src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-saved-videos-img.png"
+                  alt="no saved videos"
+                />
+                <h1>No saved videos found</h1>
+                <p>Save your videos by clicking a button</p>
+              </>
+            ) : (
+              <>
+                <HiFire />
+
+                <h1>Saved Videos</h1>
+                <ul>
+                  {filteredList.map(each => (
+                    <HomeItem key={each.id} details={each} />
+                  ))}
+                </ul>
+              </>
+            )}
+          </>
         )
       }}
     </Context.Consumer>

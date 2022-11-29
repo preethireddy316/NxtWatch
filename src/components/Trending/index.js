@@ -41,7 +41,7 @@ class Trending extends Component {
       method: 'GET',
       headers: {Authorization: `Bearer ${jwtToken}`},
     }
-    const response = await fetch(options, url)
+    const response = await fetch(url, options)
     const data = await response.json()
     if (response.ok) {
       // success view
@@ -65,11 +65,14 @@ class Trending extends Component {
   renderSuccessView = () => {
     const {trendVideosList} = this.state
     return (
-      <ul>
-        {trendVideosList.map(each => (
-          <HomeItem key={each.id} details={each} />
-        ))}
-      </ul>
+      <>
+        <h1>Trending</h1>
+        <ul>
+          {trendVideosList.map(each => (
+            <HomeItem key={each.id} details={each} />
+          ))}
+        </ul>
+      </>
     )
   }
 

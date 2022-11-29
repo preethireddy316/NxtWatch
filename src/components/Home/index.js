@@ -44,7 +44,7 @@ class Home extends Component {
       method: 'GET',
       headers: {Authorization: `Bearer ${jwtToken}`},
     }
-    const response = await fetch(options, url)
+    const response = await fetch(url, options)
     const data = await response.json()
     if (response.ok) {
       // success view

@@ -118,12 +118,7 @@ class LoginForm extends Component {
           <button type="submit" className="login-button">
             Login
           </button>
-          <input
-            type="checkbox"
-            id="show"
-            value="show"
-            onChange={this.showPassword}
-          />
+          <input type="checkbox" id="show" onChange={this.showPassword} />
           <label htmlFor="show">Show Password</label>
           {showSubmitError && <p className="error-message">*{errorMsg}</p>}
         </form>

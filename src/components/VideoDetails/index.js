@@ -50,7 +50,7 @@ class VideoDetails extends Component {
       method: 'GET',
       headers: {Authorization: `Bearer ${jwtToken}`},
     }
-    const response = await fetch(options, url)
+    const response = await fetch(url, options)
     const data = await response.json()
     if (response.ok) {
       // success view
@@ -95,8 +95,9 @@ class VideoDetails extends Component {
           <>
             <ReactPlayer url={videoUrl} />
             <h1>{title}</h1>
-            <p>{viewCount}</p>
-            <p />
+            <p>{viewCount} views</p>
+            <p>{} ago</p>
+            <br />
             <button type="button">Like</button>
             <button type="button">Dislike</button>
             <button type="button" onClick={saveVideo}>

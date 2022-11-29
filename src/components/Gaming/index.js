@@ -13,7 +13,7 @@ const apiStatusConstants = {
   noResults: 'noResult',
 }
 
-class Home extends Component {
+class Gaming extends Component {
   state = {
     videosList: [],
     apiStatus: apiStatusConstants.initial,
@@ -36,7 +36,7 @@ class Home extends Component {
   getVideos = async () => {
     this.setState({apiStatus: apiStatusConstants.inProgress})
 
-    const url = `https://apis.ccbp.in/videos/gaming`
+    const url = 'https://apis.ccbp.in/videos/gaming'
     const jwtToken = Cookies.get('jwt_token')
     const options = {
       method: 'GET',
@@ -54,11 +54,11 @@ class Home extends Component {
     }
   }
 
-  renderLoading = () => {
-    ;<div className="loader-container" data-testid="loader">
+  renderLoadingView = () => (
+    <div className="loader-container" data-testid="loader">
       <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
     </div>
-  }
+  )
 
   retry = () => {
     this.getVideos()
@@ -127,4 +127,4 @@ class Home extends Component {
   }
 }
 
-export default Home
+export default Gaming

@@ -56,11 +56,11 @@ class Trending extends Component {
     }
   }
 
-  renderLoading = () => {
-    ;<div className="loader-container" data-testid="loader">
+  renderLoadingView = () => (
+    <div className="loader-container" data-testid="loader">
       <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
     </div>
-  }
+  )
 
   renderSuccessView = () => {
     const {trendVideosList} = this.state

@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import {Component} from 'react'
 import Cookies from 'js-cookie'
 import {Redirect} from 'react-router-dom'
@@ -12,7 +10,7 @@ class LoginForm extends Component {
     password: '',
     showSubmitError: false,
     errorMsg: '',
-    isPasswordShown:false
+    isPasswordShown: false,
   }
 
   onChangeUsername = event => {
@@ -32,9 +30,8 @@ class LoginForm extends Component {
     history.replace('/')
   }
 
-
-  showPassword=()=>{
-      this.setState(prevState=>({isPasswordShown:!prevState.isPasswordShown}))
+  showPassword = () => {
+    this.setState(prevState => ({isPasswordShown: !prevState.isPasswordShown}))
   }
 
   onSubmitFailure = errorMsg => {
@@ -49,6 +46,7 @@ class LoginForm extends Component {
     const options = {
       method: 'POST',
       body: JSON.stringify(userDetails),
+      headers: {'Content-Type': 'application/json'},
     }
     const response = await fetch(url, options)
     const data = await response.json()
@@ -60,8 +58,8 @@ class LoginForm extends Component {
   }
 
   renderPasswordField = () => {
-    const {password,isPasswordShown} = this.state
-    const type = isPasswordShown?{type:"input"}:{type:"password"}
+    const {password, isPasswordShown} = this.state
+    const type = isPasswordShown ? {type: 'input'} : {type: 'password'}
     return (
       <>
         <label className="input-label" htmlFor="password">
@@ -120,7 +118,12 @@ class LoginForm extends Component {
           <button type="submit" className="login-button">
             Login
           </button>
-          <input type="checkbox" id="show" onChange={this.showPassword}/>
+          <input
+            type="checkbox"
+            id="show"
+            value="show"
+            onChange={this.showPassword}
+          />
           <label htmlFor="show">Show Password</label>
           {showSubmitError && <p className="error-message">*{errorMsg}</p>}
         </form>

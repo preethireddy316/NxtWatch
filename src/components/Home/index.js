@@ -56,11 +56,11 @@ class Home extends Component {
     }
   }
 
-  renderLoading = () => {
-    ;<div className="loader-container" data-testid="loader">
+  renderLoadingView = () => (
+    <div className="loader-container" data-testid="loader">
       <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
     </div>
-  }
+  )
 
   onChangeSearchInput = event => {
     this.setState({searchInput: event.target.value}, this.getVideos)

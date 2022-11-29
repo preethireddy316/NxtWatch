@@ -47,7 +47,7 @@ class App extends Component {
           <Route exact path="/login" component={LoginForm} />
           <ProtectedRoute exact path="/" component={Home} />
           <ProtectedRoute exact path="/trending/" component={Trending} />
-          <ProtectedRoute exact path="/gaming/" component={Gaming} />
+          <ProtectedRoute exact path="/gaming" component={Gaming} />
           <ProtectedRoute exact path="/saved-videos/" component={SavedVideos} />
           <ProtectedRoute
             exact

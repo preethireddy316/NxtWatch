@@ -10,7 +10,6 @@ const apiStatusConstants = {
   success: 'SUCCESS',
   failure: 'FAILURE',
   inProgress: 'IN_PROGRESS',
-  noResults: 'noResult',
 }
 
 class Gaming extends Component {
@@ -27,10 +26,7 @@ class Gaming extends Component {
     id: obj.id,
     title: obj.title,
     thumbnailUrl: obj.thumbnail_url,
-    name: obj.channel.name,
-    profileImageUrl: obj.channel.profile_image_url,
     viewCount: obj.view_count,
-    publishedAt: obj.published_at,
   })
 
   getVideos = async () => {
@@ -42,7 +38,7 @@ class Gaming extends Component {
       method: 'GET',
       headers: {Authorization: `Bearer ${jwtToken}`},
     }
-    const response = await fetch(options, url)
+    const response = await fetch(url, options)
     const data = await response.json()
     if (response.ok) {
       // success view
@@ -57,20 +53,6 @@ class Gaming extends Component {
   renderLoadingView = () => (
     <div className="loader-container" data-testid="loader">
       <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
-    </div>
-  )
-
-  retry = () => {
-    this.getVideos()
-  }
-
-  renderNoSearchResults = () => (
-    <div>
-      <h1>No Search</h1>
-      <p>Try different</p>
-      <button type="button" onClick={this.retry}>
-        Retry
-      </button>
     </div>
   )
 

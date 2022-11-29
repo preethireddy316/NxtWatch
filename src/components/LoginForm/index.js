@@ -46,7 +46,6 @@ class LoginForm extends Component {
     const options = {
       method: 'POST',
       body: JSON.stringify(userDetails),
-      headers: {'Content-Type': 'application/json'},
     }
     const response = await fetch(url, options)
     const data = await response.json()
@@ -59,14 +58,13 @@ class LoginForm extends Component {
 
   renderPasswordField = () => {
     const {password, isPasswordShown} = this.state
-    const type = isPasswordShown ? {type: 'input'} : {type: 'password'}
     return (
       <>
         <label className="input-label" htmlFor="password">
           PASSWORD
         </label>
         <input
-          {...type}
+          type={isPasswordShown ? 'input' : 'password'}
           id="password"
           className="password-input-field"
           value={password}
@@ -118,7 +116,12 @@ class LoginForm extends Component {
           <button type="submit" className="login-button">
             Login
           </button>
-          <input type="checkbox" id="show" onChange={this.showPassword} />
+          <input
+            type="checkbox"
+            value="show"
+            id="show"
+            onChange={this.showPassword}
+          />
           <label htmlFor="show">Show Password</label>
           {showSubmitError && <p className="error-message">*{errorMsg}</p>}
         </form>

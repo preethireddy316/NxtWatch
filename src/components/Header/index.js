@@ -1,4 +1,5 @@
 import {Link} from 'react-router-dom'
+import Cookies from 'js-cookie'
 import Context from '../../context/Context'
 
 const Header = props => (
@@ -11,8 +12,10 @@ const Header = props => (
       const themeUrl = isDarkTheme
         ? 'https://assets.ccbp.in/frontend/react-js/light-theme-img.png'
         : 'https://assets.ccbp.in/frontend/react-js/dark-theme-img.png'
+
       const onLogout = () => {
         const {history} = props
+        Cookies.remove('jwt_token')
         history.replace('/login')
       }
 

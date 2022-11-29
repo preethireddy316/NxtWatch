@@ -1,3 +1,5 @@
+import {formatDistanceToNow} from 'date-fns'
+
 import ReactPlayer from 'react-player'
 import {Component} from 'react'
 import Loader from 'react-loader-spinner'
@@ -43,8 +45,8 @@ class VideoDetails extends Component {
     this.setState({apiStatus: apiStatusConstants.inProgress})
     const {match} = this.props
     const {params} = match
-    const {id} = params
-    const url = `https://apis.ccbp.in/videos/${id}`
+    const {videoId} = params
+    const url = `https://apis.ccbp.in/videos/${videoId}`
     const jwtToken = Cookies.get('jwt_token')
     const options = {
       method: 'GET',
@@ -83,7 +85,10 @@ class VideoDetails extends Component {
           name,
           subscriberCount,
           description,
+          publishedAt,
         } = videoDetailObj
+        const date = new Date(publishedAt)
+        const diff = formatDistanceToNow(date)
 
         const saveVideo = () =>
           this.setState(
@@ -96,7 +101,7 @@ class VideoDetails extends Component {
             <ReactPlayer url={videoUrl} />
             <h1>{title}</h1>
             <p>{viewCount} views</p>
-            <p>{} ago</p>
+            <p>{diff}</p>
             <br />
             <button type="button">Like</button>
             <button type="button">Dislike</button>

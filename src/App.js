@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import {Component} from 'react'
 
 import {Route, Switch} from 'react-router-dom'
@@ -23,20 +24,24 @@ class App extends Component {
   onChangeTheme = () =>
     this.setState(prevState => ({isDarkTheme: !prevState.isDarkTheme}))
 
-  onSaveVideo = obj => {
+ onSaveVideo = (obj) => {
     const {savedList} = this.state
     if (obj.isSaved) {
-      this.setState(prevState => ({
-        savedList: [...prevState.savedList, obj.id],
-      }))
-    } else if (savedList.includes(obj.id)) {
-      const list1 = savedList.filter(each => each !== obj.id)
-      this.setState({savedList: [...list1]})
+        console.log(savedList.includes(obj))
+      if (savedList.includes(obj)) {
+        const list = savedList.filter(each => each.id !== obj.id)
+        console.log(list)
+        this.setState({savedList: [...list]})
+      }
+    } else {
+        console.log("add")
+      this.setState(prevState => ({savedList: [...prevState.savedList, obj]}))
     }
   }
 
   render() {
     const {isDarkTheme, savedList} = this.state
+    console.log(savedList)
     return (
       <Context.Provider
         value={{

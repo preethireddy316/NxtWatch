@@ -2,9 +2,13 @@ import {Component} from 'react'
 import Loader from 'react-loader-spinner'
 import Cookies from 'js-cookie'
 import {BsSearch} from 'react-icons/bs'
+import {AiOutlineClose} from 'react-icons/ai'
+import Popup from 'reactjs-popup'
 import SideBar from '../SideBar'
 import Header from '../Header'
 import HomeItem from '../HomeItem'
+import Context from '../../context/Context'
+import './index.css'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
@@ -85,14 +89,15 @@ class Home extends Component {
     return (
       <div className="search-input-container">
         <input
-          data-testid="searchButton"
           value={searchInput}
           type="search"
           className="search-input"
           placeholder="Search"
           onChange={this.onChangeSearchInput}
         />
-        <BsSearch className="search-icon" />
+        <button type="button" data-testid="searchButton">
+          <BsSearch className="search-icon" />
+        </button>
       </div>
     )
   }
@@ -112,7 +117,7 @@ class Home extends Component {
         ) : (
           <>
             {this.renderSearchInput()}
-            <ul>
+            <ul className="ul">
               {videosList.map(each => (
                 <HomeItem key={each.id} details={each} />
               ))}
@@ -154,13 +159,55 @@ class Home extends Component {
     }
   }
 
+  overlayStyle = () => ({
+    backgroundImage:
+      'https://assets.ccbp.in/frontend/react-js/nxt-watch-banner-bg.png',
+  })
+
+  renderBanner = () => (
+    <div>
+      <Popup open overlayStyle={this.overlayStyles} data-testid="banner">
+        {close => (
+          <>
+            <div>
+              <img
+                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
+                alt="nxt watch logo"
+              />
+              <p>Buy Nxt Watch Premium</p>
+              <button type="button">GET IT NOW</button>
+            </div>
+            <button
+              type="button"
+              data-testid="close"
+              className="trigger-button"
+              onClick={() => close()}
+            >
+              <AiOutlineClose />
+            </button>
+          </>
+        )}
+      </Popup>
+    </div>
+  )
+
   render() {
     return (
-      <>
-        <Header />
-        <SideBar />
-        {this.renderAllProducts()}
-      </>
+      <Context.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+          const bgcls = isDarkTheme ? 'bg' : ''
+
+          return (
+            <div data-testid="home" className={bgcls}>
+              <Header />
+              <SideBar />
+              {this.renderBanner()}
+              {this.renderAllProducts()}
+            </div>
+          )
+        }}
+      </Context.Consumer>
     )
   }
 }

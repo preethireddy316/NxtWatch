@@ -28,21 +28,15 @@ const Header = props => (
           <ul className="header-list">
             <li>
               <Link to="/">
-                <button
-                  type="button"
-                  data-testid="theme"
-                  onChange={changeTheme}
-                >
-                  <img src={logourl} alt="nxt watch logo" />
+                <button type="button" data-testid="theme" onClick={changeTheme}>
+                  <img src={logourl} alt="website logo" />
                 </button>
               </Link>
             </li>
             <li>
-              <Link to="/">
-                <button type="button" onChange={changeTheme}>
-                  <img src={themeUrl} alt="theme" />
-                </button>
-              </Link>
+              <button type="button" onClick={changeTheme}>
+                <img src={themeUrl} alt="theme" />
+              </button>
             </li>
             <li>
               <Link to="/">

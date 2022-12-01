@@ -18,8 +18,8 @@ const HomeItem = props => {
   return (
     <li>
       <Link to={`videos/${id}`}>
-        <img src={thumbnailUrl} alt="" />
-        <img src={profileImageUrl} alt="" />
+        <img src={thumbnailUrl} alt="video thumbnail" />
+        <img src={profileImageUrl} alt="channel logo" />
         <p>{title}</p>
         <p>{name}</p>
         <p>{viewCount} views</p>

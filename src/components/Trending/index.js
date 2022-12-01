@@ -4,6 +4,8 @@ import Cookies from 'js-cookie'
 import Header from '../Header'
 import SideBar from '../SideBar'
 import HomeItem from '../HomeItem'
+import Context from '../../context/Context'
+import './index.css'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
@@ -76,11 +78,15 @@ class Trending extends Component {
     )
   }
 
+  retry = () => {
+    this.getVideos()
+  }
+
   renderFailureView = () => (
     <div className="products-error-view-container">
       <img
         src="https://assets.ccbp.in/frontend/react-js/nxt-trendz/nxt-trendz-products-error-view.png"
-        alt="all-products-error"
+        alt="failure view"
         className="products-failure-img"
       />
       <h1 className="product-failure-heading-text">
@@ -89,6 +95,9 @@ class Trending extends Component {
       <p className="products-failure-description">
         We are having some trouble processing your request. Please try again.
       </p>
+      <button type="button" onClick={this.retry}>
+        Retry
+      </button>
     </div>
   )
 
@@ -109,12 +118,20 @@ class Trending extends Component {
 
   render() {
     return (
-      <>
-        <Header />
-        <SideBar />
+      <Context.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+          const bgcls = isDarkTheme ? 'bg' : ''
+          return (
+            <div className={bgcls}>
+              <Header />
+              <SideBar />
 
-        {this.renderAllProducts()}
-      </>
+              {this.renderAllProducts()}
+            </div>
+          )
+        }}
+      </Context.Consumer>
     )
   }
 }

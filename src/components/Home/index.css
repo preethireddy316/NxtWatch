@@ -1,0 +1,13 @@
+.popup-container{
+    background-image: url('https://assets.ccbp.in/frontend/react-js/nxt-watch-banner-bg.png');
+    background-size: cover;
+    height: 100vh;
+}
+
+.bg{
+    background-color: #181818;
+    color: white;
+}
+.ul{
+    color: white;
+}

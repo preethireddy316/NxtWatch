@@ -9,6 +9,7 @@ import Gaming from './components/Gaming'
 import SavedVideos from './components/SavedVideos'
 import VideoDetails from './components/VideoDetails'
 
+import NotFound from './components/NotFound'
 import ProtectedRoute from './components/ProtectedRoute'
 
 import Context from './context/Context'
@@ -22,13 +23,15 @@ class App extends Component {
   onChangeTheme = () =>
     this.setState(prevState => ({isDarkTheme: !prevState.isDarkTheme}))
 
-  onSaveVideo = (isSaved, id) => {
+  onSaveVideo = obj => {
     const {savedList} = this.state
-    if (isSaved) {
-      this.setState(prevState => ({savedList: [...prevState.savedList, id]}))
-    } else if (savedList.includes(id)) {
-      const list = savedList.filter(each => each !== id)
-      this.setState({savedList: [...list]})
+    if (obj.isSaved) {
+      this.setState(prevState => ({
+        savedList: [...prevState.savedList, obj.id],
+      }))
+    } else if (savedList.includes(obj.id)) {
+      const list1 = savedList.filter(each => each !== obj.id)
+      this.setState({savedList: [...list1]})
     }
   }
 
@@ -54,6 +57,7 @@ class App extends Component {
             path="/videos/:videoId"
             component={VideoDetails}
           />
+          <Route path="not-found" component={NotFound} />
         </Switch>
       </Context.Provider>
     )

@@ -8,6 +8,8 @@ import SideBar from '../SideBar'
 import Header from '../Header'
 import HomeItem from '../HomeItem'
 import Context from '../../context/Context'
+import {Cont, BannerCont} from '../styledComponents'
+
 import './index.css'
 
 const apiStatusConstants = {
@@ -49,6 +51,7 @@ class Home extends Component {
       headers: {Authorization: `Bearer ${jwtToken}`},
     }
     const response = await fetch(url, options)
+    console.log('get request')
     const data = await response.json()
     if (response.ok) {
       // success view
@@ -67,22 +70,28 @@ class Home extends Component {
   )
 
   onChangeSearchInput = event => {
-    this.setState({searchInput: event.target.value}, this.getVideos)
+    this.setState({searchInput: event.target.value})
   }
 
   retry = () => {
-    this.getVideos()
+    this.setState({searchInput: ''}, this.getVideos)
   }
 
   renderNoSearchResults = () => (
     <div>
-      <h1>No Search</h1>
-      <p>Try different</p>
+      <img
+        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
+        alt="no videos"
+      />
+      <h1>No Search results found</h1>
+      <p>Try different key words or remove search filter</p>
       <button type="button" onClick={this.retry}>
         Retry
       </button>
     </div>
   )
+
+  ClickSearch = () => this.getVideos()
 
   renderSearchInput = () => {
     const {searchInput} = this.state
@@ -95,7 +104,11 @@ class Home extends Component {
           placeholder="Search"
           onChange={this.onChangeSearchInput}
         />
-        <button type="button" data-testid="searchButton">
+        <button
+          type="button"
+          data-testid="searchButton"
+          onClick={this.ClickSearch}
+        >
           <BsSearch className="search-icon" />
         </button>
       </div>
@@ -112,11 +125,11 @@ class Home extends Component {
 
     return (
       <>
+        {this.renderSearchInput()}
         {noResults ? (
           this.renderNoSearchResults()
         ) : (
           <>
-            {this.renderSearchInput()}
             <ul className="ul">
               {videosList.map(each => (
                 <HomeItem key={each.id} details={each} />
@@ -159,52 +172,56 @@ class Home extends Component {
     }
   }
 
-  overlayStyle = () => ({
-    backgroundImage:
-      'https://assets.ccbp.in/frontend/react-js/nxt-watch-banner-bg.png',
-  })
+  renderBanner = () => {
+    const overlayStyles = {
+      position: 'fixed',
+      backgroundImage:
+        'https://assets.ccbp.in/frontend/react-js/nxt-watch-banner-bg.png',
+      width: '500px',
+      backgroundColor: 'red',
+    }
 
-  renderBanner = () => (
-    <div>
-      <Popup open overlayStyle={this.overlayStyles} data-testid="banner">
-        {close => (
-          <>
-            <div>
-              <img
-                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-                alt="nxt watch logo"
-              />
-              <p>Buy Nxt Watch Premium</p>
-              <button type="button">GET IT NOW</button>
-            </div>
-            <button
-              type="button"
-              data-testid="close"
-              className="trigger-button"
-              onClick={() => close()}
-            >
-              <AiOutlineClose />
-            </button>
-          </>
-        )}
-      </Popup>
-    </div>
-  )
+    return (
+      <BannerCont data-testid="banner">
+        <Popup open modal overlayStyles={overlayStyles}>
+          {close => (
+            <>
+              <div>
+                <img
+                  src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
+                  alt="nxt watch logo"
+                />
+                <p>Buy Nxt Watch Premium</p>
+                <button type="button">GET IT NOW</button>
+              </div>
+              <button
+                type="button"
+                data-testid="close"
+                className="trigger-button"
+                onClick={() => close()}
+              >
+                <AiOutlineClose />
+              </button>
+            </>
+          )}
+        </Popup>
+      </BannerCont>
+    )
+  }
 
   render() {
     return (
       <Context.Consumer>
         {value => {
           const {isDarkTheme} = value
-          const bgcls = isDarkTheme ? 'bg' : ''
 
           return (
-            <div data-testid="home" className={bgcls}>
+            <Cont data-testid="home" isDarkTheme={isDarkTheme}>
               <Header />
               <SideBar />
               {this.renderBanner()}
               {this.renderAllProducts()}
-            </div>
+            </Cont>
           )
         }}
       </Context.Consumer>

@@ -1,6 +1,8 @@
 import {Component} from 'react'
 import Cookies from 'js-cookie'
 import {Redirect} from 'react-router-dom'
+import {Cont, LoginButton} from '../styledComponents'
+import Context from '../../context/Context'
 
 import './index.css'
 
@@ -96,38 +98,50 @@ class LoginForm extends Component {
   }
 
   render() {
-    const {showSubmitError, errorMsg} = this.state
-    const jwtToken = Cookies.get('jwt_token')
-
-    if (jwtToken !== undefined) {
-      return <Redirect to="/" />
-    }
-
     return (
-      <div className="login-form-container">
-        <form className="form-container" onSubmit={this.submitForm}>
-          <img
-            src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-            className="login-website-logo-desktop-img"
-            alt="website logo"
-          />
-          <div className="input-container">{this.renderUsernameField()}</div>
-          <div className="input-container">{this.renderPasswordField()}</div>
-          <button type="submit" className="login-button">
-            Login
-          </button>
-          <input
-            type="checkbox"
-            value="show"
-            id="show"
-            onChange={this.showPassword}
-          />
-          <label htmlFor="show">Show Password</label>
-          {showSubmitError && <p className="error-message">*{errorMsg}</p>}
-        </form>
-      </div>
+      <Context.Consumer>
+        {value => {
+          const {isDarkTheme} = value
+          const {showSubmitError, errorMsg} = this.state
+          const jwtToken = Cookies.get('jwt_token')
+
+          if (jwtToken !== undefined) {
+            return <Redirect to="/" />
+          }
+
+          return (
+            <Cont isDarkTheme={isDarkTheme}>
+              <form className="form-container" onSubmit={this.submitForm}>
+                <img
+                  src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
+                  className="login-website-logo-desktop-img"
+                  alt="website logo"
+                />
+                <div className="input-container">
+                  {this.renderUsernameField()}
+                </div>
+                <div className="input-container">
+                  {this.renderPasswordField()}
+                </div>
+                <LoginButton type="submit" className="login-button">
+                  Login
+                </LoginButton>
+                <input
+                  type="checkbox"
+                  value="show"
+                  id="show"
+                  onChange={this.showPassword}
+                />
+                <label htmlFor="show">Show Password</label>
+                {showSubmitError && (
+                  <p className="error-message">*{errorMsg}</p>
+                )}
+              </form>
+            </Cont>
+          )
+        }}
+      </Context.Consumer>
     )
   }
 }
-
 export default LoginForm

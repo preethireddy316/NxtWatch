@@ -62,7 +62,8 @@ class App extends Component {
             path="/videos/:videoId"
             component={VideoDetails}
           />
-          <Route path="not-found" component={NotFound} />
+          <ProtectedRoute path="/not-found" component={NotFound} />
+          <Redirect to="not-found" /> />
         </Switch>
       </Context.Provider>
     )

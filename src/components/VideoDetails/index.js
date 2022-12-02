@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import {formatDistanceToNow} from 'date-fns'
 
 import ReactPlayer from 'react-player'
@@ -10,6 +9,7 @@ import Header from '../Header'
 import SideBar from '../SideBar'
 
 import Context from '../../context/Context'
+import {Cont, Button1, Button2, Button3} from '../styledComponents'
 
 import './index.css'
 
@@ -80,110 +80,116 @@ class VideoDetails extends Component {
     </div>
   )
 
-  onClickLike = () => {
-    const {videoDetailObj} = this.state
-    const {isLiked, isDisliked} = videoDetailObj
-
-    if (isDisliked === true && isLiked === false) {
-      this.setState(prevState => ({
-        videoDetailObj: {
-          ...prevState.videoDetailObj,
-          isLiked: !prevState.videoDetailObj.isLiked,
-          isDisliked: !prevState.videoDetailObj.isDisliked,
-        },
-      }))
-    } else {
-      this.setState(prevState => ({
-        videoDetailObj: {
-          ...prevState.videoDetailObj,
-          isLiked: !prevState.videoDetailObj.isLiked,
-        },
-      }))
-    }
-  }
-
-  onClickDislike = () => {
-    const {videoDetailObj} = this.state
-    const {isLiked, isDisliked} = videoDetailObj
-    if (isLiked === true && isDisliked === false) {
-      this.setState(prevState => ({
-        videoDetailObj: {
-          ...prevState.videoDetailObj,
-          isLiked: !prevState.videoDetailObj.isLiked,
-          isDisliked: !prevState.videoDetailObj.isDisliked,
-        },
-      }))
-    } else {
-      this.setState(prevState => ({
-        videoDetailObj: {
-          ...prevState.videoDetailObj,
-          isDisliked: !prevState.videoDetailObj.isDisliked,
-        },
-      }))
-    }
-  }
-
-  renderSuccessView = () => 
-  (<Context.Consumer>
+  renderSuccessView = () => (
+    <Context.Consumer>
       {value => {
         const {onSaveVideo, savedList} = value
-const {videoDetailObj} = this.state
-    const {id,
-      videoUrl,
-      title,
-      viewCount,
-      name,
-      subscriberCount,
-      description,
-      publishedAt,
-      isLiked,
-      isDisliked,
-      profileImageUrl,
-    } = videoDetailObj
-    const date = new Date(publishedAt)
-    const diff = formatDistanceToNow(date)
-    const cls1 = isLiked ? 'clslike' : 'c'
-    const cls2 = isDisliked ? 'clslike' : 'c'
-    const cls3 = savedList.includes(id) ? 'clslike' : 'c'
-     const saveVideo = () => {
-         console.log("i",videoDetailObj)
-    this.setState(prevState => ({
-      videoDetailObj: {
-        ...prevState.videoDetailObj,
-        isSaved: !prevState.videoDetailObj.isSaved,
-      },
-    }))
+        const {videoDetailObj} = this.state
+        const {
+          id,
+          videoUrl,
+          title,
+          viewCount,
+          name,
+          subscriberCount,
+          description,
+          publishedAt,
+          isLiked,
+          isDisliked,
+          profileImageUrl,
+        } = videoDetailObj
+        const date = new Date(publishedAt)
+        const diff = formatDistanceToNow(date)
+        console.log(isLiked, isDisliked, 'ggggggggggg')
+        const inSavedList = savedList.some(each => each.id === id)
+        console.log(
+          savedList.some(each => each.id === id),
+          'includes',
+        )
+        const a = savedList.some(each => each.id === id)
+        console.log(a, 'a')
+        const saveVideo = () => {
+          this.setState(prevState => ({
+            videoDetailObj: {
+              ...prevState.videoDetailObj,
+              isSaved: !prevState.videoDetailObj.isSaved,
+            },
+          }))
+          onSaveVideo(videoDetailObj)
+        }
 
-    console.log("after set",videoDetailObj)
-    onSaveVideo(videoDetailObj)
-  }
+        const clickLike = () => {
+          if (isDisliked === true && isLiked === false) {
+            this.setState(prevState => ({
+              videoDetailObj: {
+                ...prevState.videoDetailObj,
+                isLiked: !prevState.videoDetailObj.isLiked,
+                isDisliked: !prevState.videoDetailObj.isDisliked,
+              },
+            }))
+          } else {
+            this.setState(prevState => ({
+              videoDetailObj: {
+                ...prevState.videoDetailObj,
+                isLiked: !prevState.videoDetailObj.isLiked,
+              },
+            }))
+          }
+        }
 
-    return (
-      <>
-        <ReactPlayer url={videoUrl} />
-        <img src={profileImageUrl} alt="channel logo" />
-        <p>{title}</p>
-        <p>{viewCount} views</p>
-        <p>{diff}</p>
-        <br />
-        <button type="button" onClick={this.onClickLike} className={cls1}>
-          Like
-        </button>
-        <button type="button" onClick={this.onClickDislike} className={cls2}>
-          Dislike
-        </button>
-        <button type="button" onClick={saveVideo} className={cls3}>
-          {savedList.includes(id) ? 'Saved' : 'Save'}
-        </button>
-        <br />
-        <p>{name}</p>
-        <p>{subscriberCount} Subscribers</p>
-        <p>{description}</p>
-      </>
-    )            
+        const clickDislike = () => {
+          if (isLiked === true && isDisliked === false) {
+            this.setState(prevState => ({
+              videoDetailObj: {
+                ...prevState.videoDetailObj,
+                isLiked: !prevState.videoDetailObj.isLiked,
+                isDisliked: !prevState.videoDetailObj.isDisliked,
+              },
+            }))
+          } else {
+            this.setState(prevState => ({
+              videoDetailObj: {
+                ...prevState.videoDetailObj,
+                isDisliked: !prevState.videoDetailObj.isDisliked,
+              },
+            }))
+          }
+        }
+
+        return (
+          <>
+            <ReactPlayer url={videoUrl} />
+            <img src={profileImageUrl} alt="channel logo" />
+            <p>{title}</p>
+            <p>{viewCount} views</p>
+            <p>{diff}</p>
+            <br />
+            <Button1 type="button" onClick={clickLike} isLiked={isLiked}>
+              Like
+            </Button1>
+            <Button2
+              type="button"
+              onClick={clickDislike}
+              isDisliked={isDisliked}
+            >
+              Dislike
+            </Button2>
+            <Button3
+              type="button"
+              onClick={saveVideo}
+              inSavedList={inSavedList}
+            >
+              {a ? 'Saved' : 'Save'}
+            </Button3>
+            <br />
+            <p>{name}</p>
+            <p>{subscriberCount} Subscribers</p>
+            <p>{description}</p>
+          </>
+        )
       }}
-    
-</Context.Consumer>)
+    </Context.Consumer>
+  )
 
   retry = () => {
     this.getVideo()
@@ -239,13 +245,12 @@ const {videoDetailObj} = this.state
       <Context.Consumer>
         {value => {
           const {isDarkTheme} = value
-          const bgcls = isDarkTheme ? 'bg' : ''
           return (
-            <div className={bgcls}>
+            <Cont data-testid="videoItemDetails" isDarkTheme={isDarkTheme}>
               <Header />
               <SideBar />
               {this.renderAllProducts()}
-            </div>
+            </Cont>
           )
         }}
       </Context.Consumer>

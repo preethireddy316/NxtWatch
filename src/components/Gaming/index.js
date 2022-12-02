@@ -5,6 +5,7 @@ import SideBar from '../SideBar'
 import Header from '../Header'
 import GamingItem from '../GamingItem'
 import Context from '../../context/Context'
+import {Cont} from '../styledComponents'
 
 const apiStatusConstants = {
   initial: 'INITIAL',
@@ -113,14 +114,13 @@ class Gaming extends Component {
       <Context.Consumer>
         {value => {
           const {isDarkTheme} = value
-          const bgcls = isDarkTheme ? 'bg' : ''
           return (
-            <div className={bgcls}>
+            <Cont data-testid="gaming" isDarkTheme={isDarkTheme}>
               <Header />
               <SideBar />
 
               {this.renderAllProducts()}
-            </div>
+            </Cont>
           )
         }}
       </Context.Consumer>

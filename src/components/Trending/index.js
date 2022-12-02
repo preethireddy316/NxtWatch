@@ -5,6 +5,8 @@ import Header from '../Header'
 import SideBar from '../SideBar'
 import HomeItem from '../HomeItem'
 import Context from '../../context/Context'
+import {Cont} from '../styledComponents'
+
 import './index.css'
 
 const apiStatusConstants = {
@@ -121,14 +123,12 @@ class Trending extends Component {
       <Context.Consumer>
         {value => {
           const {isDarkTheme} = value
-          const bgcls = isDarkTheme ? 'bg' : ''
           return (
-            <div className={bgcls}>
+            <Cont data-testid="trending" isDarkTheme={isDarkTheme}>
               <Header />
               <SideBar />
-
               {this.renderAllProducts()}
-            </div>
+            </Cont>
           )
         }}
       </Context.Consumer>

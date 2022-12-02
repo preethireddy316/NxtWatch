@@ -1,6 +1,8 @@
 import {Link} from 'react-router-dom'
 import Cookies from 'js-cookie'
+import Popup from 'reactjs-popup'
 import Context from '../../context/Context'
+import {Cont} from '../styledComponents'
 
 const Header = props => (
   <Context.Consumer>
@@ -16,12 +18,18 @@ const Header = props => (
       const onLogout = () => {
         const {history} = props
         Cookies.remove('jwt_token')
+        console.log('1logout')
         history.replace('/login')
+        console.log('logout')
       }
 
       const changeTheme = () => {
         onChangeTheme()
       }
+
+      const overlayStyles = isDarkTheme
+        ? {backgroundColor: '#f9f9f9', color: '#181818'}
+        : {backgroundColor: '#181818', color: '#f9f9f9'}
 
       return (
         <nav className="nav">
@@ -47,11 +55,25 @@ const Header = props => (
               </Link>
             </li>
             <li>
-              <Link to="/login">
-                <button type="button" onClick={onLogout}>
-                  Logout
-                </button>
-              </Link>
+              <Popup
+                className="f"
+                modal
+                overlayStyles={overlayStyles}
+                trigger={<button type="button">Logout</button>}
+              >
+                {close => (
+                  <Cont>
+                    <p>Are you sure, you want to logout?</p>
+
+                    <button type="button" onClick={() => close()}>
+                      Cancel
+                    </button>
+                    <button type="button" onClick={onLogout}>
+                      Confirm
+                    </button>
+                  </Cont>
+                )}
+              </Popup>
             </li>
           </ul>
         </nav>

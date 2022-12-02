@@ -3,15 +3,15 @@ import SideBar from '../SideBar'
 import Header from '../Header'
 import HomeItem from '../HomeItem'
 import Context from '../../context/Context'
+import {Cont} from '../styledComponents'
 
 const SavedVideos = () => (
   <Context.Consumer>
     {value => {
       const {isDarkTheme, savedList} = value
-      const bgcls = isDarkTheme ? 'bg' : ''
 
       const renderSuccessView = () => (
-        <>
+        <div>
           {savedList.length === 0 ? (
             <>
               <img
@@ -19,7 +19,7 @@ const SavedVideos = () => (
                 alt="no saved videos"
               />
               <h1>No saved videos found</h1>
-              <p>Save your videos by clicking a button</p>
+              <p>You can save your videos by clicking a button</p>
             </>
           ) : (
             <>
@@ -33,16 +33,16 @@ const SavedVideos = () => (
               </ul>
             </>
           )}
-        </>
+        </div>
       )
 
       return (
-        <div className={bgcls}>
+        <Cont isDarkTheme={isDarkTheme}>
           <Header />
           <SideBar />
 
           {renderSuccessView()}
-        </div>
+        </Cont>
       )
     }}
   </Context.Consumer>
